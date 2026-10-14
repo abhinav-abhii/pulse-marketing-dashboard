@@ -169,7 +169,9 @@ campaignChart = new Chart(chartCanvas, {
         backgroundColor: "#8cff00",
         borderRadius: 6,
 
-        barThickness: 36,
+       barThickness:"flex",
+       barPercentage: 0.55,
+       categoryPercentage: 0.7,
 
         yAxisID: "y"
     },
@@ -226,6 +228,7 @@ campaignChart = new Chart(chartCanvas, {
         scales: {
 
     x: {
+        offset: true,
         grid: {
             display: false
         },
