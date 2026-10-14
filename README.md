@@ -1,6 +1,6 @@
 # Pulse — Marketing Analytics Dashboard
 
-**Live Demo:** [View Pulse Dashboard](https://pulse-marketing-dashboard-laylvwqwi-abhinav-abhii.vercel.app/)
+**Live Demo:** [View Pulse Dashboard]((https://pulse-marketing-dashboard.vercel.app/))
 
 **GitHub Repository:** [View Source Code](https://github.com/abhinav-abhii/pulse-marketing-dashboard)
 
