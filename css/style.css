@@ -1017,6 +1017,16 @@ select.filter {
         padding: 12px;
     }
 
+    .section-link,
+    .status-tabs button {
+        min-height: 40px;
+    }
+
+    .section-link {
+        display: flex;
+        align-items: center;
+    }
+
     .campaign-item {
         flex-wrap: wrap;
     }
@@ -1035,5 +1045,14 @@ select.filter {
 
     .detail-metrics {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* Very small phones: keep every menu link inside the menu */
+@media (max-width: 380px) {
+    .section-link {
+        padding: 7px 5px;
+        font-size: 11px;
     }
 }

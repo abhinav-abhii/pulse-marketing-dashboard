@@ -266,7 +266,8 @@ campaignChart = new Chart(chartCanvas, {
 
 ticks: {
     color: CHART_COLORS.text,
-    maxRotation: 0,
+    // Tilt the names only when they do not fit side by side
+    maxRotation: 60,
     minRotation: 0,
     autoSkip: false,
     font: {
