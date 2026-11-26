@@ -18,347 +18,195 @@
 
 <body>
 
-    <div class="app">
+    <div class="page">
 
-        <!-- Sidebar -->
-        <aside class="sidebar">
+        <header class="topbar">
 
             <div class="brand">
-                <div class="brand-icon">P</div>
-                <div>
-                    <h2>Pulse</h2>
-                    <span>Marketing Analytics</span>
-                </div>
+                <h1>Pulse</h1>
+                <p>Marketing analytics</p>
             </div>
 
-            <nav class="sidebar-nav">
+            <div class="filter-controls">
 
-                <p class="nav-label">MENU</p>
+                <select id="platform-filter" class="filter" aria-label="Platform">
+                    <option value="All">All Platforms</option>
+                    <option value="Google Ads">Google Ads</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="YouTube">YouTube</option>
+                </select>
 
-                <a href="#" class="nav-link active">
-                    <span>▦</span>
-                    Overview
-                </a>
+                <select id="status-filter" class="filter" aria-label="Status">
+                    <option value="All">All Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Paused">Paused</option>
+                </select>
 
-                <a href="#" class="nav-link">
-                    <span>◫</span>
-                    Campaigns
-                </a>
+                <select id="date-filter" class="filter" aria-label="Date range">
+                    <option value="All">All Time</option>
+                    <option value="7">Last 7 Days</option>
+                    <option value="30">Last 30 Days</option>
+                    <option value="90">Last 90 Days</option>
+                </select>
 
-                <a href="#" class="nav-link">
-                    <span>◈</span>
-                    Analytics
-                </a>
-
-                <a href="#" class="nav-link">
-                    <span>⚙</span>
-                    Settings
-                </a>
-
-            </nav>
-
-            <div class="sidebar-footer">
-                <span>Pulse Dashboard</span>
-                <small>v1.0.0</small>
             </div>
 
-        </aside>
+        </header>
 
 
-        <!-- Main Content -->
-        <main class="main-content">
+        <main>
 
-            <header class="topbar">
+            <!-- Totals -->
+            <section class="stats" aria-label="Totals">
 
-                <div>
-                    <p class="eyebrow">MARKETING OVERVIEW</p>
-                    <h1>Dashboard</h1>
+                <div class="stat">
+                    <span class="stat-label">Total Spend</span>
+                    <div class="stat-value" id="total-spend">₹0</div>
                 </div>
 
-                <button class="profile-button">
-                    <span class="profile-avatar">AR</span>
-                    <span>Abhinav</span>
-                </button>
+                <div class="stat">
+                    <span class="stat-label">Impressions</span>
+                    <div class="stat-value" id="total-impressions">0</div>
+                </div>
 
-            </header>
+                <div class="stat">
+                    <span class="stat-label">Clicks</span>
+                    <div class="stat-value" id="total-clicks">0</div>
+                </div>
 
+                <div class="stat">
+                    <span class="stat-label">Conversions</span>
+                    <div class="stat-value" id="total-conversions">0</div>
+                </div>
 
-            <!-- Dashboard content will be added here -->
+            </section>
 
-<section class="dashboard-content">
 
-    <!-- Dashboard heading -->
-    <div class="welcome-section">
-        <div>
-            <h2>Campaign performance</h2>
-            <p>
-                Monitor your marketing performance and track your
-                most important metrics.
-            </p>
-        </div>
-    </div>
+            <!-- Efficiency metrics -->
+            <section class="stats stats-secondary" aria-label="Campaign efficiency">
 
+                <div class="stat">
+                    <span class="stat-label" title="Click-through rate">CTR</span>
+                    <div class="stat-value" id="ctr-value">0%</div>
+                </div>
 
-    <!-- KPI Cards -->
-    <div class="kpi-grid">
+                <div class="stat">
+                    <span class="stat-label" title="Clicks converted">Conversion Rate</span>
+                    <div class="stat-value" id="conversion-rate-value">0%</div>
+                </div>
 
-        <!-- Total Spend -->
-        <div class="kpi-card">
+                <div class="stat">
+                    <span class="stat-label" title="Cost per click">CPC</span>
+                    <div class="stat-value" id="cpc-value">₹0</div>
+                </div>
 
-            <div class="kpi-header">
-                <span>Total Spend</span>
-                <span class="kpi-icon">₹</span>
-            </div>
+                <div class="stat">
+                    <span class="stat-label" title="Return on ad spend">ROAS</span>
+                    <div class="stat-value" id="roas-value">0x</div>
+                </div>
 
-            <div class="kpi-value" id="total-spend">
-                ₹0
-            </div>
+            </section>
 
-            <div class="kpi-change positive">
-                ↑ 12.4%
-                <span>vs last month</span>
-            </div>
 
-        </div>
+            <section class="section">
 
+                <h2>Campaign performance</h2>
 
-        <!-- Impressions -->
-        <div class="kpi-card">
+                <div class="chart-card">
+                    <div class="chart-container">
+                        <canvas id="campaign-performance-chart"></canvas>
 
-            <div class="kpi-header">
-                <span>Impressions</span>
-                <span class="kpi-icon">◉</span>
-            </div>
+                        <div id="campaign-chart-empty" class="chart-empty">
+                            <strong>No data available</strong>
+                            <span>Try adjusting your filters.</span>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="kpi-value" id="total-impressions">
-                0
-            </div>
+            </section>
 
-            <div class="kpi-change positive">
-                ↑ 8.7%
-                <span>vs last month</span>
-            </div>
 
-        </div>
+            <section class="section">
 
+                <h2>Platform performance</h2>
 
-        <!-- Clicks -->
-        <div class="kpi-card">
+                <div class="chart-card">
+                    <div class="chart-container">
+                        <canvas id="platform-performance-chart"></canvas>
 
-            <div class="kpi-header">
-                <span>Clicks</span>
-                <span class="kpi-icon">↗</span>
-            </div>
+                        <div id="platform-chart-empty" class="chart-empty">
+                            <strong>No data available</strong>
+                            <span>Try adjusting your filters.</span>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="kpi-value" id="total-clicks">
-                0
-            </div>
+            </section>
 
-            <div class="kpi-change positive">
-                ↑ 5.2%
-                <span>vs last month</span>
-            </div>
 
-        </div>
+            <section class="section">
 
+                <div class="campaign-header">
 
-        <!-- Conversions -->
-        <div class="kpi-card">
+                    <h2>Campaigns</h2>
 
-            <div class="kpi-header">
-                <span>Conversions</span>
-                <span class="kpi-icon">✓</span>
-            </div>
+                    <input
+                        type="text"
+                        id="campaign-search"
+                        class="campaign-search"
+                        placeholder="Search campaigns..."
+                        aria-label="Search campaigns"
+                    >
 
-            <div class="kpi-value" id="total-conversions">
-                0
-            </div>
+                </div>
 
-            <div class="kpi-change positive">
-                ↑ 14.8%
-                <span>vs last month</span>
-            </div>
-
-        </div>
-
-    </div>
-
-    <section class="performance-section">
-
-    <div class="section-heading">
-        <div>
-            <span class="section-eyebrow">PERFORMANCE</span>
-            <h2>Campaign efficiency</h2>
-        </div>
-    </div>
-
-    <div class="metrics-grid">
-
-        <div class="metric-card">
-            <span class="metric-label">CTR</span>
-            <div class="metric-value" id="ctr-value">0%</div>
-            <span class="metric-description">Click-through rate</span>
-        </div>
-
-        <div class="metric-card">
-            <span class="metric-label">Conversion Rate</span>
-            <div class="metric-value" id="conversion-rate-value">0%</div>
-            <span class="metric-description">Clicks converted</span>
-        </div>
-
-        <div class="metric-card">
-            <span class="metric-label">CPC</span>
-            <div class="metric-value" id="cpc-value">₹0</div>
-            <span class="metric-description">Cost per click</span>
-        </div>
-
-        <div class="metric-card">
-            <span class="metric-label">ROAS</span>
-            <div class="metric-value" id="roas-value">0x</div>
-            <span class="metric-description">Return on ad spend</span>
-        </div>
-
-    </div>
-
-</section>
-
-<div class="filter-section">
-
-    <div>
-        <span class="section-eyebrow">FILTER</span>
-        <h2>Campaigns</h2>
-    </div>
-    <div class="filter-controls">
-
-    <select id="platform-filter" class="platform-filter">
-        <option value="All">All Platforms</option>
-        <option value="Google Ads">Google Ads</option>
-        <option value="Instagram">Instagram</option>
-        <option value="Facebook">Facebook</option>
-        <option value="YouTube">YouTube</option>
-    </select>
-
-    <select id="status-filter" class="platform-filter">
-        <option value="All">All Status</option>
-        <option value="Active">Active</option>
-        <option value="Paused">Paused</option>
-    </select>
-
-    <select id="date-filter" class="platform-filter">
-        <option value="All">All Time</option>
-        <option value="7">Last 7 Days</option>
-        <option value="30">Last 30 Days</option>
-        <option value="90">Last 90 Days</option>
-    </select>
-    </div>
-
-</div>
-<section class="chart-section">
-
-    <div class="section-heading">
-        <div>
-            <span class="section-eyebrow">ANALYTICS</span>
-            <h2>Campaign performance</h2>
-        </div>
-    </div>
-
-    <div class="chart-card">
-        <div class="chart-container">
-    <canvas id="campaign-performance-chart"></canvas>
-
-    <div id="campaign-chart-empty" class="chart-empty">
-        <strong>No data available</strong>
-        <span>Try adjusting your filters.</span>
-    </div>
-</div>
-    </div>
-
-</section>
-
-<section class="chart-section">
-    <div class="section-heading">
-        <span class="section-eyebrow">ANALYTICS</span>
-        <h2>Platform performance</h2>
-    </div>
-
-    <div class="chart-card">
-       <div class="chart-container">
-    <canvas id="platform-performance-chart"></canvas>
-
-    <div id="platform-chart-empty" class="chart-empty">
-        <strong>No data available</strong>
-        <span>Try adjusting your filters.</span>
-    </div>
-</div>
-    </div>
-</section>
-
-<section class="campaigns-section">
-
-    <div class="campaign-header">
-
-        <div class="section-heading">
-        <span class="section-eyebrow">CAMPAIGNS</span>
-        <h2>Campaign performance</h2>
-        </div>
-
-    <input
-        type="text"
-        id="campaign-search"
-        class="campaign-search"
-        placeholder="Search campaigns..."
-    >
-
-     </div>
-
-    <div class="table-card">
-
-        <div class="table-responsive">
-
-            <table class="campaign-table">
-
-                <thead>
-    <tr>
-        <th data-sort="name">Campaign ↕</th>
-        <th>Platform</th>
-        <th data-sort="spend">Spend ↕</th>
-        <th data-sort="clicks">Clicks ↕</th>
-        <th data-sort="conversions">Conversions ↕</th>
-        <th data-sort="roas">ROAS ↕</th>
-        <th>Status</th>
-    </tr>
-</thead>
-
-                <tbody id="campaign-table-body">
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</section>
-
-</section>
+                <div class="table-card">
+
+                    <div class="table-responsive">
+
+                        <table class="campaign-table">
+
+                            <thead>
+                                <tr>
+                                    <th data-sort="name">Campaign ↕</th>
+                                    <th>Platform</th>
+                                    <th data-sort="spend">Spend ↕</th>
+                                    <th data-sort="clicks">Clicks ↕</th>
+                                    <th data-sort="conversions">Conversions ↕</th>
+                                    <th data-sort="roas">ROAS ↕</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="campaign-table-body">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
 
         </main>
 
     </div>
 
     <!-- Bootstrap JavaScript -->
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Application data -->
-<script src="js/data.js"></script>
+    <!-- Application data -->
+    <script src="js/data.js"></script>
 
-<!-- Custom JavaScript -->
-<script src="js/app.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="js/app.js"></script>
 
 </body>
 

@@ -11,6 +11,21 @@ let sortDirection = "asc";
 let selectedStatus = "All";
 let selectedDateRange = "All";
 
+// Chart colours for the light theme
+const CHART_COLORS = {
+    spend: "#3b5bdb",
+    conversions: "#a1a1aa",
+    line: "#18181b",
+    text: "#63636b",
+    grid: "#f0f0f2"
+};
+
+Chart.defaults.color = CHART_COLORS.text;
+Chart.defaults.borderColor = CHART_COLORS.grid;
+Chart.defaults.plugins.legend.align = "end";
+Chart.defaults.plugins.legend.labels.boxWidth = 10;
+Chart.defaults.plugins.legend.labels.boxHeight = 10;
+
 function updateDashboard() {
 
 let visibleCampaigns = filteredCampaigns;
@@ -85,10 +100,19 @@ const totalRevenue = visibleCampaigns.reduce((total, campaign) => {
 }, 0);
 
     // 2.Calculate performance metrics
-const ctr = ((totalClicks / totalImpressions) * 100).toFixed(2);
-const conversionRate =((totalConversions / totalClicks) * 100).toFixed(2);
-const cpc = (totalSpend / totalClicks).toFixed(2);
-const roas = (totalRevenue / totalSpend).toFixed(2);
+// Show "—" when there is nothing to divide by, for example when no campaigns match.
+const ctr = totalImpressions
+    ? ((totalClicks / totalImpressions) * 100).toFixed(2) + "%"
+    : "—";
+const conversionRate = totalClicks
+    ? ((totalConversions / totalClicks) * 100).toFixed(2) + "%"
+    : "—";
+const cpc = totalClicks
+    ? "₹" + (totalSpend / totalClicks).toFixed(2)
+    : "—";
+const roas = totalSpend
+    ? (totalRevenue / totalSpend).toFixed(2) + "x"
+    : "—";
 
 // 3.Update the dashboard with calculated values
 document.getElementById("total-spend").textContent =
@@ -107,17 +131,13 @@ document.getElementById("total-conversions").textContent =
     formatNumber(totalConversions);
  
 // 4.Update the performance metrics on the dashboard
-document.getElementById("ctr-value").textContent =
-    ctr + "%";
+document.getElementById("ctr-value").textContent = ctr;
 
-document.getElementById("conversion-rate-value").textContent =
-    conversionRate + "%";
+document.getElementById("conversion-rate-value").textContent = conversionRate;
 
-document.getElementById("cpc-value").textContent =
-    "₹" + cpc;
+document.getElementById("cpc-value").textContent = cpc;
 
-document.getElementById("roas-value").textContent =
-    roas + "x";
+document.getElementById("roas-value").textContent = roas;
 
 const campaignNames = visibleCampaigns.map(campaign => campaign.name);
 
@@ -166,13 +186,14 @@ campaignChart = new Chart(chartCanvas, {
         label: "Ad Spend",
         data: campaignSpend,
 
-        backgroundColor: "#8cff00",
-        borderRadius: 6,
+        backgroundColor: CHART_COLORS.spend,
+        borderRadius: 3,
 
        barThickness:"flex",
        barPercentage: 0.55,
        categoryPercentage: 0.7,
 
+        order: 2,
         yAxisID: "y"
     },
 
@@ -182,8 +203,8 @@ campaignChart = new Chart(chartCanvas, {
         label: "Conversions",
         data: campaignConversions,
 
-        borderColor: "#f4f7f4",
-        backgroundColor: "#f4f7f4",
+        borderColor: CHART_COLORS.line,
+        backgroundColor: CHART_COLORS.line,
 
         borderWidth: 2,
 
@@ -192,6 +213,7 @@ campaignChart = new Chart(chartCanvas, {
 
         tension: 0.3,
 
+        order: 1,
         yAxisID: "y1"
     }
 ]
@@ -204,7 +226,9 @@ campaignChart = new Chart(chartCanvas, {
 
         plugins: {
             legend: {
-                display: false
+                labels: {
+                    sort: (a, b) => a.datasetIndex - b.datasetIndex
+                }
             },
 
             tooltip: {
@@ -236,7 +260,7 @@ campaignChart = new Chart(chartCanvas, {
         
 
 ticks: {
-    color: "#929a94",
+    color: CHART_COLORS.text,
     maxRotation: 0,
     minRotation: 0,
     autoSkip: false,
@@ -273,11 +297,11 @@ callback: function(value) {
         position: "left",
 
         grid: {
-            color: "#242925"
+            color: CHART_COLORS.grid
         },
 
         ticks: {
-            color: "#929a94",
+            color: CHART_COLORS.text,
 
             callback: function(value) {
                 return "₹" +
@@ -297,7 +321,7 @@ callback: function(value) {
         },
 
         ticks: {
-            color: "#929a94"
+            color: CHART_COLORS.text
         }
     }
 }
@@ -333,12 +357,16 @@ platformChart = new Chart(platformChartCanvas, {
             {
                 label: "Ad Spend",
                 data: platformSpend,
-                borderRadius: 8
+                backgroundColor: CHART_COLORS.spend,
+                borderRadius: 3,
+                yAxisID: "y"
             },
             {
                 label: "Conversions",
                 data: platformConversions,
-                borderRadius: 8
+                backgroundColor: CHART_COLORS.conversions,
+                borderRadius: 3,
+                yAxisID: "y1"
             }
         ]
     },
@@ -348,7 +376,7 @@ platformChart = new Chart(platformChartCanvas, {
         scales: {
             x: {
                 ticks: {
-                    color: "#929a94",
+                    color: CHART_COLORS.text,
                     maxRotation: 0,
                     minRotation: 0,
                     autoSkip: false,
@@ -371,6 +399,33 @@ platformChart = new Chart(platformChartCanvas, {
 
                         return label;
                     }
+                }
+            },
+
+            // Spend on the left, conversions on the right, so both stay visible
+            y: {
+                beginAtZero: true,
+                position: "left",
+                title: {
+                    display: window.innerWidth > 576,
+                    text: "Spend"
+                },
+                ticks: {
+                    callback: function(value) {
+                        return "₹" + (value / 1000) + "K";
+                    }
+                }
+            },
+
+            y1: {
+                beginAtZero: true,
+                position: "right",
+                title: {
+                    display: window.innerWidth > 576,
+                    text: "Conversions"
+                },
+                grid: {
+                    drawOnChartArea: false
                 }
             }
         }
