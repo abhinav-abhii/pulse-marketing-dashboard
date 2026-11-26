@@ -23,11 +23,146 @@
         <header class="topbar">
 
             <div class="brand">
-                <h1>Pulse</h1>
-                <p>Marketing analytics</p>
+                <div class="brand-icon" aria-hidden="true">P</div>
+                <div>
+                    <strong>Pulse</strong>
+                    <span>Marketing analytics</span>
+                </div>
             </div>
 
-            <div class="filter-controls">
+            <nav class="section-nav" aria-label="Sections">
+                <a href="#overview" class="section-link active">Overview</a>
+                <a href="#analytics" class="section-link">Analytics</a>
+                <a href="#details" class="section-link">Details</a>
+                <a href="#campaigns" class="section-link">Campaigns</a>
+            </nav>
+
+        </header>
+
+
+        <main>
+
+            <div class="page-heading" id="overview">
+
+                <div>
+                    <h1>Marketing Overview</h1>
+                    <p>Monitor and compare all your campaigns in one place.</p>
+                </div>
+
+                <button type="button" id="reset-filters" class="primary-button">
+                    Reset filters
+                </button>
+
+            </div>
+
+
+            <!-- Summary cards -->
+            <section class="summary-grid" aria-label="Summary">
+
+                <article class="tile">
+                    <span class="tile-label">Total Spend</span>
+                    <div class="tile-value" id="total-spend">₹0</div>
+                    <span class="tile-note">
+                        <span id="spend-note"></span> · CPC <span id="cpc-value">₹0</span>
+                    </span>
+                    <div class="mini-bars" id="spend-bars" aria-hidden="true"></div>
+                </article>
+
+                <article class="tile">
+                    <div class="tile-head">
+                        <span class="tile-label">Revenue</span>
+                        <span class="chip" title="Return on ad spend">ROAS <span id="roas-value">0x</span></span>
+                    </div>
+                    <div class="tile-value" id="total-revenue">₹0</div>
+                    <span class="tile-note" id="revenue-note"></span>
+                    <svg
+                        class="mini-line"
+                        id="revenue-line"
+                        viewBox="0 0 200 70"
+                        role="img"
+                        aria-label="Revenue by campaign, oldest to newest"
+                    ></svg>
+                </article>
+
+                <article class="tile">
+                    <span class="tile-label">Funnel</span>
+
+                    <div class="funnel">
+
+                        <div class="funnel-step">
+                            <span>Impressions</span>
+                            <strong id="total-impressions">0</strong>
+                            <div class="funnel-track"><div id="impressions-bar"></div></div>
+                        </div>
+
+                        <div class="funnel-step">
+                            <span>Clicks</span>
+                            <strong id="total-clicks">0</strong>
+                            <div class="funnel-track"><div id="clicks-bar"></div></div>
+                        </div>
+
+                        <div class="funnel-step">
+                            <span>Conversions</span>
+                            <strong id="total-conversions">0</strong>
+                            <div class="funnel-track"><div id="conversions-bar"></div></div>
+                        </div>
+
+                    </div>
+
+                    <div class="funnel-rates">
+                        <span class="chip" title="Click-through rate">CTR <span id="ctr-value">0%</span></span>
+                        <span class="chip" title="Clicks converted">Conversion <span id="conversion-rate-value">0%</span></span>
+                    </div>
+                </article>
+
+                <article class="tile">
+                    <span class="tile-label">Spend by platform</span>
+                    <span class="tile-note">All campaigns. Select one to filter.</span>
+                    <div class="platform-tiles" id="platform-tiles"></div>
+                </article>
+
+            </section>
+
+
+            <!-- Highlights -->
+            <section class="highlight-grid" aria-label="Highlights">
+
+                <article class="highlight">
+                    <span class="highlight-icon" aria-hidden="true">★</span>
+                    <div>
+                        <span class="tile-label">Best ROAS</span>
+                        <strong id="best-roas-name">—</strong>
+                        <small id="best-roas-value"></small>
+                    </div>
+                </article>
+
+                <article class="highlight">
+                    <span class="highlight-icon" aria-hidden="true">✓</span>
+                    <div>
+                        <span class="tile-label">Highest conversion rate</span>
+                        <strong id="best-rate-name">—</strong>
+                        <small id="best-rate-value"></small>
+                    </div>
+                </article>
+
+                <article class="highlight">
+                    <span class="highlight-icon" aria-hidden="true">↓</span>
+                    <div>
+                        <span class="tile-label">Lowest cost per click</span>
+                        <strong id="lowest-cpc-name">—</strong>
+                        <small id="lowest-cpc-value"></small>
+                    </div>
+                </article>
+
+            </section>
+
+
+            <!-- Filters -->
+            <section class="filter-bar" aria-label="Filters">
+
+                <span class="filter-title">
+                    Active filters <span class="count" id="filter-count">0</span>
+                </span>
 
                 <select id="platform-filter" class="filter" aria-label="Platform">
                     <option value="All">All Platforms</option>
@@ -50,70 +185,33 @@
                     <option value="90">Last 90 Days</option>
                 </select>
 
-            </div>
+                <div class="search-field">
 
-        </header>
+                    <input
+                        type="text"
+                        id="campaign-search"
+                        class="filter campaign-search"
+                        placeholder="Search campaigns..."
+                        aria-label="Search campaigns"
+                    >
 
+                    <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M16.5 16.5 21 21"/>
+                    </svg>
 
-        <main>
-
-            <!-- Totals -->
-            <section class="stats" aria-label="Totals">
-
-                <div class="stat">
-                    <span class="stat-label">Total Spend</span>
-                    <div class="stat-value" id="total-spend">₹0</div>
-                </div>
-
-                <div class="stat">
-                    <span class="stat-label">Impressions</span>
-                    <div class="stat-value" id="total-impressions">0</div>
-                </div>
-
-                <div class="stat">
-                    <span class="stat-label">Clicks</span>
-                    <div class="stat-value" id="total-clicks">0</div>
-                </div>
-
-                <div class="stat">
-                    <span class="stat-label">Conversions</span>
-                    <div class="stat-value" id="total-conversions">0</div>
                 </div>
 
             </section>
 
 
-            <!-- Efficiency metrics -->
-            <section class="stats stats-secondary" aria-label="Campaign efficiency">
+            <!-- Charts -->
+            <div class="chart-grid" id="analytics">
 
-                <div class="stat">
-                    <span class="stat-label" title="Click-through rate">CTR</span>
-                    <div class="stat-value" id="ctr-value">0%</div>
-                </div>
+                <section class="panel">
 
-                <div class="stat">
-                    <span class="stat-label" title="Clicks converted">Conversion Rate</span>
-                    <div class="stat-value" id="conversion-rate-value">0%</div>
-                </div>
+                    <h2>Campaign performance</h2>
 
-                <div class="stat">
-                    <span class="stat-label" title="Cost per click">CPC</span>
-                    <div class="stat-value" id="cpc-value">₹0</div>
-                </div>
-
-                <div class="stat">
-                    <span class="stat-label" title="Return on ad spend">ROAS</span>
-                    <div class="stat-value" id="roas-value">0x</div>
-                </div>
-
-            </section>
-
-
-            <section class="section">
-
-                <h2>Campaign performance</h2>
-
-                <div class="chart-card">
                     <div class="chart-container">
                         <canvas id="campaign-performance-chart"></canvas>
 
@@ -122,16 +220,13 @@
                             <span>Try adjusting your filters.</span>
                         </div>
                     </div>
-                </div>
 
-            </section>
+                </section>
 
+                <section class="panel">
 
-            <section class="section">
+                    <h2>Platform performance</h2>
 
-                <h2>Platform performance</h2>
-
-                <div class="chart-card">
                     <div class="chart-container">
                         <canvas id="platform-performance-chart"></canvas>
 
@@ -140,51 +235,63 @@
                             <span>Try adjusting your filters.</span>
                         </div>
                     </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- Campaign list and details -->
+            <section class="spotlight" id="details">
+
+                <div class="spotlight-head">
+
+                    <h2>Campaign spotlight</h2>
+
+                    <div class="status-tabs" role="group" aria-label="Filter by status">
+                        <button type="button" data-status="All">All <span>0</span></button>
+                        <button type="button" data-status="Active">Active <span>0</span></button>
+                        <button type="button" data-status="Paused">Paused <span>0</span></button>
+                    </div>
+
+                </div>
+
+                <div class="spotlight-body">
+
+                    <div class="campaign-list" id="campaign-list"></div>
+
+                    <div class="campaign-details" id="campaign-details" aria-live="polite"></div>
+
                 </div>
 
             </section>
 
 
-            <section class="section">
+            <!-- Table -->
+            <section class="panel table-panel" id="campaigns">
 
-                <div class="campaign-header">
+                <h2>All campaigns</h2>
 
-                    <h2>Campaigns</h2>
+                <div class="table-responsive">
 
-                    <input
-                        type="text"
-                        id="campaign-search"
-                        class="campaign-search"
-                        placeholder="Search campaigns..."
-                        aria-label="Search campaigns"
-                    >
+                    <table class="campaign-table">
 
-                </div>
+                        <thead>
+                            <tr>
+                                <th data-sort="name">Campaign ↕</th>
+                                <th>Platform</th>
+                                <th data-sort="spend">Spend ↕</th>
+                                <th data-sort="clicks">Clicks ↕</th>
+                                <th data-sort="conversions">Conversions ↕</th>
+                                <th data-sort="roas">ROAS ↕</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
 
-                <div class="table-card">
+                        <tbody id="campaign-table-body">
+                        </tbody>
 
-                    <div class="table-responsive">
-
-                        <table class="campaign-table">
-
-                            <thead>
-                                <tr>
-                                    <th data-sort="name">Campaign ↕</th>
-                                    <th>Platform</th>
-                                    <th data-sort="spend">Spend ↕</th>
-                                    <th data-sort="clicks">Clicks ↕</th>
-                                    <th data-sort="conversions">Conversions ↕</th>
-                                    <th data-sort="roas">ROAS ↕</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-
-                            <tbody id="campaign-table-body">
-                            </tbody>
-
-                        </table>
-
-                    </div>
+                    </table>
 
                 </div>
 
@@ -204,6 +311,9 @@
 
     <!-- Application data -->
     <script src="js/data.js"></script>
+
+    <!-- Summary cards and campaign panel -->
+    <script src="js/cards.js"></script>
 
     <!-- Custom JavaScript -->
     <script src="js/app.js"></script>

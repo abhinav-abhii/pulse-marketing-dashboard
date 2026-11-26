@@ -42,6 +42,7 @@ pulse-dashboard/
 │   └── style.css
 ├── js/
 │   ├── data.js
+│   ├── cards.js
 │   └── app.js
 └── assets/
 ```

@@ -11,13 +11,14 @@ let sortDirection = "asc";
 let selectedStatus = "All";
 let selectedDateRange = "All";
 
-// Chart colours for the light theme
+// Chart colours for the indigo and navy palette
 const CHART_COLORS = {
-    spend: "#3b5bdb",
-    conversions: "#a1a1aa",
-    line: "#18181b",
-    text: "#63636b",
-    grid: "#f0f0f2"
+    spend: "#5646f1",
+    conversions: "#b3acf7",
+    conversionsBorder: "#8a80ee",
+    line: "#1d2031",
+    text: "#5d6078",
+    grid: "#eeedf7"
 };
 
 Chart.defaults.color = CHART_COLORS.text;
@@ -29,12 +30,6 @@ Chart.defaults.plugins.legend.labels.boxHeight = 10;
 function updateDashboard() {
 
 let visibleCampaigns = filteredCampaigns;
-
-if (selectedStatus !== "All") {
-    visibleCampaigns = visibleCampaigns.filter(campaign => {
-        return campaign.status === selectedStatus;
-    });
-}
 
 if (selectedDateRange !== "All") {
     const days = Number(selectedDateRange);
@@ -57,6 +52,16 @@ if (searchTerm) {
             campaign.name.toLowerCase().includes(searchTerm) ||
             campaign.platform.toLowerCase().includes(searchTerm)
         );
+    });
+}
+
+// Kept for the status tab counts, which ignore the status filter itself
+const campaignsOfAnyStatus = visibleCampaigns;
+
+// Status is applied last
+if (selectedStatus !== "All") {
+    visibleCampaigns = visibleCampaigns.filter(campaign => {
+        return campaign.status === selectedStatus;
     });
 }
 
@@ -187,7 +192,7 @@ campaignChart = new Chart(chartCanvas, {
         data: campaignSpend,
 
         backgroundColor: CHART_COLORS.spend,
-        borderRadius: 3,
+        borderRadius: 8,
 
        barThickness:"flex",
        barPercentage: 0.55,
@@ -358,14 +363,16 @@ platformChart = new Chart(platformChartCanvas, {
                 label: "Ad Spend",
                 data: platformSpend,
                 backgroundColor: CHART_COLORS.spend,
-                borderRadius: 3,
+                borderRadius: 6,
                 yAxisID: "y"
             },
             {
                 label: "Conversions",
                 data: platformConversions,
                 backgroundColor: CHART_COLORS.conversions,
-                borderRadius: 3,
+                borderColor: CHART_COLORS.conversionsBorder,
+                borderWidth: 1,
+                borderRadius: 6,
                 yAxisID: "y1"
             }
         ]
@@ -471,6 +478,9 @@ if (visibleCampaigns.length === 0) {
         tableBody.appendChild(row);
     });
 }
+
+// Summary cards and campaign panel (js/cards.js)
+renderCards(visibleCampaigns, campaignsOfAnyStatus);
 }
 // updatedashboard function ends here
 
